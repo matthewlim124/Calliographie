@@ -1,0 +1,35 @@
+{
+  "name": "calliographie",
+  "version": "1.0.0",
+  "description": "integrated system project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewlim124/Calliographie.git"
+  },
+  "author": "Matt-Lim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matthewlim124/Calliographie/issues"
+  },
+  "homepage": "https://github.com/matthewlim124/Calliographie#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-async-handler": "^1.2.0",
+    "express-session": "^1.18.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.8.2",
+    "passport": "^0.7.0",
+    "passport-google-oauth2": "^0.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
