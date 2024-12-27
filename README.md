@@ -1,6 +1,6 @@
 # Project Integrated System Technology
 
-## Api description
+## How to access or call api
 
 **Project url: https://calliographie.et.r.appspot.com**
 
@@ -13,15 +13,12 @@ Allows user to register an account using username and password
 Allows user to login using registered credentials (username & password)
 
 
-## Call the api from your browser 
+## Call the api from your browser
 
-You could use the html element if you do not want to do it manually or if you want to, <br>
-
-1.Go to the https://calliographie.et.r.appspot.com
-2.Navigate to developer tools (F12) and go to console <br> 
-3.Paste following code into your browser console, allow pasting if your browser rejects <br>
-4.Before clicking enter, change inside of the fetch() into https://calliographie.et.r.appspot.com/api/user/ **api name** <br>
-5.Also change the username or pasword in the request body
+1.Navigate to developer tools (F12) and go to console
+2.Paste following code into your browser console, allow pasting if your browser rejects
+3.Before clicking enter, change the fetch() into https://calliographie.et.r.appspot.com/api/user/**api name**
+4.Also change the username or pasword in the request body
 ```
 const response = await fetch(' url/api/user/register or login' , {
                 method: 'POST',
@@ -29,17 +26,17 @@ const response = await fetch(' url/api/user/register or login' , {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ 
-                    "username": "any new username", 
-                    "password": "any password" }),
-                });
+                    username: "any new username", 
+                    password: "any password" }),
+                };
             
             if (response.ok) {
                 const data = await response.json();
-                alert("Sign-up/login successful!")
+                alert("Sign-up successful!")
                 
             } else {
                 
-                alert("sign up/login fail");
+                alert("sign up fail");
             }
         
 ```

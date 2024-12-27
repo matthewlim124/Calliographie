@@ -9,6 +9,111 @@
     <body>
 
         <h1>Hello world</h1>
-    </body>
+        <button id="hellobutton"></button>
 
+    </body>
+    <script>
+        
+        let token_acc = localStorage.getItem("accessToken");
+        let username = localStorage.getItem("usr");
+        
+        const refreshToken = async () => {
+                try {
+                    console.log("Attempting to refresh token...");
+                    let response_refresh = await fetch('http://localhost:8080/api/user/refresh', {
+                        method: 'POST',
+                        credentials: 'include',
+                        withCredentials: true,
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ username }),
+                       
+                        
+
+                    });
+                    console.log(response_refresh);
+                    if (response_refresh.ok) {
+                        const data2 = await response_refresh.json();
+                        localStorage.setItem("accessToken", data2.accessToken);
+                        console.log(data2.accessToken);
+                        alert(`Token refreshed successfully ${data2.accessToken}`);
+                        
+                        
+                    } else {
+                        const error =  await response_refresh.json();
+                        console.error("Refresh token failed:", error);
+                        alert(`Error refreshing token: ${error.message}`);
+                        
+                    }
+                } catch (err) {
+                    console.error("Error during refresh token fetch:", err);
+                }
+            };
+        
+        const fetchSayHello = async () => {
+            token_acc = localStorage.getItem("accessToken");
+                try {
+                    const response = await fetch('http://localhost:8080/api/service/sayhello', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token_acc}`,
+                        },
+                    });
+
+                
+                    if (response.ok) {
+                        const data1 = await response.json();
+                        alert(`Hello! You successfully called this API! ${data1.Hello}`);
+                    } else {
+                        const error = await response.json();
+                        console.log("Error from GET request:", error);
+                        refreshToken();
+                        
+                    }
+                } catch (err) {
+                    console.error("GET request failed:", err);
+                    alert("An error occurred during the GET request.");
+                }
+            };
+
+
+        document.getElementById("hellobutton").addEventListener("click", async function (event) {
+            event.preventDefault();
+
+            
+            
+            // Separate POST fetch for "refresh"
+            
+
+            // Call the "sayhello" API fetch
+
+            
+            fetchSayHello();
+            
+
+            
+           
+            
+            
+            
+            
+        
+            
+            
+            
+            
+        });
+   
+            
+            
+           
+            
+            
+
+            
+                        
+            
+    </script>
 </html>
