@@ -58,7 +58,8 @@
 
             try {
                 //http://localhost:8080
-                const response = await fetch('https://calliographie-test-quickstart-744429109192.asia-southeast2.run.app/api/user/login', {
+                //https://calliographie-test-quickstart-744429109192.asia-southeast2.run.app
+                const response = await fetch('http://localhost:8080/api/user/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -72,7 +73,7 @@
                     localStorage.setItem('accessToken', data.accessToken);
                     localStorage.setItem('usr', data.username);
                     
-                    window.location.href = 'helloworld.html';
+                    window.location.href = 'home.html';
                 } else {
                     const error = await response.json();
                     alert(`Error: ${error.message}`);

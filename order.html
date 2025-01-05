@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .container {
+            width: 100%;
+            min-height: 70vh;
+            border-style: dashed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #left, #right {
+            width: 300px;
+            min-height: 200px;
+            margin: 30px;
+            border-style: dashed;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .list {
+            margin: 20px;
+            background-color: skyblue;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            cursor: grab;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Order</h1>
+
+    <div class="container">
+        <div id="left">
+            <h2>Your Box</h2>
+        </div>
+        <div id="right">
+            
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button id="order-button">Order</button>
+    </div>
+
+    <script>
+        const leftBox = document.getElementById("left");
+        const rightBox = document.getElementById("right");
+
+        async function fetchAndDisplayProducts() {
+            try {
+                const response = await fetch("http://localhost:8080/api/service/getProduct", {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log(data);
+                    populateProducts(data);
+                } else {
+                    console.error("Error fetching products:", await response.json());
+                }
+            } catch (err) {
+                console.error("Cannot get product:", err);
+            }
+        }
+
+        function populateProducts(products) {
+            const categories = {};
+
+            // Filter by stock and group by category
+            products.forEach(product => {
+                if (product.stock > 0) {
+                    if (!categories[product.product_category]) {
+                        categories[product.product_category] = [];
+                    }
+                    categories[product.product_category].push(product.product_name);
+                }
+            });
+
+            // Populate the right box with categories and products
+            rightBox.innerHTML = ''; // Clear existing content
+
+            for (const [category, items] of Object.entries(categories)) {
+                // Create category heading
+                const categoryHeading = document.createElement('h2');
+                categoryHeading.textContent = category;
+                rightBox.appendChild(categoryHeading);
+
+                // Add products under the category
+                items.forEach(item => {
+                    const productDiv = document.createElement('div');
+                    productDiv.classList.add('list');
+                    productDiv.setAttribute('draggable', 'true');
+                    productDiv.textContent = item;
+
+                    // Attach drag-and-drop behavior
+                    productDiv.addEventListener("dragstart", function (e) {
+                        e.dataTransfer.setData("text", e.target.id);
+                        e.target.classList.add("dragging");
+                    });
+
+                    productDiv.addEventListener("dragend", function (e) {
+                        e.target.classList.remove("dragging");
+                    });
+
+                    rightBox.appendChild(productDiv);
+                });
+            }
+        }
+
+        // Add drag-and-drop functionality to the left box
+        leftBox.addEventListener("dragover", function (e) {
+            e.preventDefault();
+        });
+
+        leftBox.addEventListener("drop", function (e) {
+            e.preventDefault();
+            const draggedElement = document.querySelector(".dragging");
+            if (draggedElement) {
+                leftBox.appendChild(draggedElement);
+                draggedElement.classList.remove("dragging");
+            }
+        });
+
+        rightBox.addEventListener("dragover", function (e) {
+            e.preventDefault();
+        });
+
+        rightBox.addEventListener("drop", function (e) {
+            e.preventDefault();
+            const draggedElement = document.querySelector(".dragging");
+            if (draggedElement) {
+                rightBox.appendChild(draggedElement);
+                draggedElement.classList.remove("dragging");
+            }
+        });
+
+        const refreshToken = async () => {
+                try {
+                    console.log("Attempting to refresh token...");
+                    let response_refresh = await fetch('http://localhost:8080/api/user/refresh', {
+                        method: 'POST',
+                        credentials: 'include',
+                        withCredentials: true,
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ username }),
+                       
+                        
+
+                    });
+                    console.log(response_refresh);
+                    if (response_refresh.ok) {
+                        const data2 = await response_refresh.json();
+                        localStorage.setItem("accessToken", data2.accessToken);
+                        console.log(data2.accessToken);
+                        alert(`Token refreshed successfully ${data2.accessToken}`);
+                        
+                        
+                    } else {
+                        const error =  await response_refresh.json();
+                        console.error("Refresh token failed:", error);
+                        alert(`Error refreshing token: ${error.message}`);
+                        
+                    }
+                } catch (err) {
+                    console.error("Error during refresh token fetch:", err);
+                }
+            };
+
+        let username = localStorage.getItem("usr");
+        let token_acc = localStorage.getItem("accessToken");
+        document.getElementById("order-button").addEventListener("click", async function () {
+            token_acc = localStorage.getItem("accessToken");
+            const items = Array.from(leftBox.getElementsByClassName("list"))
+                .map(item => item.textContent);
+
+            if (items.length === 0) {
+                alert("No items to order!");
+                return;
+            }
+            
+
+            try {
+                
+                const response = await fetch("http://localhost:8080/api/service/checkout", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token_acc}`,
+                    },
+                    body: JSON.stringify({ items, username }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log("Order placed successfully:", data);
+                    alert("Order placed successfully!");
+                    window.location.href = 'checkout.html';
+                } else {
+                    const error = await response.json();
+                    console.log("Error placing order:", error);
+                    refreshToken();
+
+                }
+            } catch (err) {
+                console.error("Failed to place order:", err);
+                alert("Failed to place order. Please try again.");
+            }
+        });
+
+        // Fetch and display products on page load
+        fetchAndDisplayProducts();
+    </script>
+</body>
+</html>

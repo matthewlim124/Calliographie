@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const {sayhello } = require("../controller/logicController.js");
+const {sayhello, getProduct, checkOut} = require("../controller/logicController.js");
 const validateToken = require("../middleware/TokenHandler.js");
 
 
-router.use(validateToken);
+router.post("/checkout",validateToken, checkOut );
 
-router.get("/sayhello", sayhello);
+router.get("/sayhello",validateToken, sayhello);
+router.get("/getProduct", getProduct);
+
 
 module.exports = router;
