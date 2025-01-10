@@ -8,12 +8,16 @@
     </style>
 </head>
 <body>
-    <h1>Welcome, </h1>
+    <h1 id="user-header">Welcome, </h1>
     <button id="personalize-box-button" onclick="window.location.href='order.html';">Personalize box</button>
-    <button id="profile-button">Profile</button>
+    <button id="profile-button" onclick="window.location.href='profile.html';">Profile</button>
+    <button id="ai-button" onclick="window.location.href='learn.html';">Ask and Learn with AI</button>
+    <button id="creative-button" onclick="window.location.href='creative.html';">Find inspiration from images</button>
 </body>
 <script>
-    
+    let username = localStorage.getItem("usr");
+    const scoreElement = document.getElementById('user-header');
+    scoreElement.textContent = `Welcome, ${username}`;
 </script>
 
 </html>

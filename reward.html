@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .top-right {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .score {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .score-button {
+            padding: 8px 16px;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .score-button:hover {
+            background-color: #e68900;
+        }
+
+        .container{
+            display: flex;
+            min-height: 70vh;
+            width: 100%;
+            justify-content: space-evenly;
+            align-items: center;
+            
+        }
+
+        #product{
+            display:flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-style: dashed;
+            border-radius: 4px;
+            padding: 20px;
+        }
+
+        .exchange-button {
+            padding: 8px 16px;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-right">
+        <div class="score" id="user-score">Score: 0</div>
+        
+    </div>
+
+    <div class="container">
+
+
+        <div id="product">
+            <h3 id="reward1">5% discount next purchase</h3>
+            <p>Required Score: 20</p>
+            <button class="exchange-button">Exchange x 1</button>
+        </div>
+        <div id="product">
+            <h3 id="reward2">10% discount next purchase</h3>
+            <p>Required Score: 50</p>
+            <button class="exchange-button">Exchange x 1</button>
+        </div>
+    </div>
+</body>
+<script>
+    let username = localStorage.getItem("usr");
+    let token_acc = localStorage.getItem("accessToken");
+    async function getScore(){
+            try{
+                const response = await fetch("https://calliographie-744429109192.asia-southeast2.run.app/api/user/current", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token_acc}`,
+                            },
+                            
+                            body: JSON.stringify({username})
+
+
+                });
+
+                if(response.ok){
+                    const result = await response.json();
+
+                    const scoreElement = document.getElementById('user-score');
+                    scoreElement.textContent = `Score: ${result.user_score}`;
+                    
+                }else{
+                    refreshToken();
+                }
+
+            }catch(err){
+                console.err("Error fetching score");
+            }
+    }
+
+    getScore();
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const buttons = document.getElementsByClassName("exchange-button"); // This returns an HTMLCollection
+        
+        for (let button of buttons) {
+            button.addEventListener("click", async function(event) {
+                event.preventDefault();
+                const parentDiv = event.target.parentElement;
+                const reward = parentDiv.querySelector('h3').innerText;
+
+                
+
+                const username = localStorage.getItem("usr"); // Make sure the username is valid
+                const token_acc = localStorage.getItem("accessToken"); // Make sure the token is valid
+
+                if (!username || !token_acc) {
+                    alert("User not logged in or token not available.");
+                    return;
+                }
+
+                try {
+                    const response = await fetch("https://calliographie-744429109192.asia-southeast2.run.app/api/service/exchange", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token_acc}`,
+                        },
+                        body: JSON.stringify({ reward, username })
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+
+                        if (result.message == "Exchanged finished !!") {
+                            alert("Exchange Success");
+                            window.location.reload();
+                        } else {
+                            alert("Your point is not enough");
+                        }
+                    } else {
+                        refreshToken();
+                    }
+                } catch (err) {
+                    console.error("Error fetching score", err);
+                }
+            });
+        }
+    });
+    
+    
+
+    const refreshToken = async () => {
+                try {
+                    console.log("Attempting to refresh token...");
+                    let response_refresh = await fetch('https://calliographie-744429109192.asia-southeast2.run.app/api/user/refresh', {
+                        method: 'POST',
+                        credentials: 'include',
+                        withCredentials: true,
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ username }),
+                       
+                        
+
+                    });
+                   
+                    if (response_refresh.ok) {
+                        const data2 = await response_refresh.json();
+                        localStorage.setItem("accessToken", data2.accessToken);
+                        
+                        alert(`Token refreshed successfully, please try again!!`);
+                        
+                        
+                    } else {
+                        const error =  await response_refresh.json();
+                        console.error("Refresh token failed:", error);
+                        alert(`Error refreshing token: ${error.message}`);
+                        
+                    }
+                } catch (err) {
+                    console.error("Error during refresh token fetch:", err);
+                }
+        };
+
+
+
+</script>
+</html>

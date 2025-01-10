@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 70vh;
+            justify-content: center;
+            align-items: center;
+            gap: 20px; /* Space between elements */
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Space between input and button */
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+            width: 300px;
+        }
+
+        input[type="file"] {
+            display: none; /* Hide the default file input */
+        }
+
+        .upload-label {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .upload-label:hover {
+            background-color: #0056b3;
+        }
+
+        button {
+            padding: 8px 16px;
+            font-size: 16px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #response-container {
+            margin-top: 20px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container"> 
+        <h3>Enter a keyword and upload an image like places, environment, you name it and we will search for a new image that 
+            might help you get creative with your calligraphy!
+        </h2>
+        <p>Visit the original <a href="https://pairfect.codebloop.my.id/">site!</a>  </p>
+        <p>Note it might take around 15 seconds or more after you click submit</p>
+        
+        <div>
+            <img id="resultImage" src="" alt="Generated Image" />
+        </div>
+        <div id="response-container"></div> 
+        <form id="ai-form" method="POST" enctype="multipart/form-data">
+            <div class="input-group">
+                <input type="text" id="promptInput" name="prompt" placeholder="Enter a keyword" required>
+                <!-- Hidden file input and a custom label -->
+                <input type="file" name="image" id="imageInput">
+                <label for="imageInput" class="upload-label">Upload Image (.jpg)</label>
+            </div>
+            <button id="submit-button" type="submit">Submit</button>
+        </form>
+    </div>
+
+</body>
+<script>
+
+        const fileInput = document.getElementById('imageInput');
+        const uploadLabel = document.querySelector('.upload-label');
+
+        fileInput.addEventListener('change', function () {
+            // Update the label text to the selected file name
+            if (this.files[0]) {
+                uploadLabel.textContent = this.files[0].name;
+            }
+        });
+
+        let username = localStorage.getItem("usr");
+        let token_acc = localStorage.getItem("accessToken");
+    async function pairfect(){
+        const promptInput = document.getElementById("promptInput");  // Assuming prompt input has id 'prompt'
+        const imageInput = document.getElementById("imageInput"); 
+        const formData = new FormData();
+        formData.append('keyword', promptInput.value);
+        formData.append('image', imageInput.files[0]);
+
+        try {
+                
+
+                const response = await fetch("https://calliographie-744429109192.asia-southeast2.run.app/api/service/pairfect", {
+                    method: 'POST',
+                    headers: {
+                        
+                        'Authorization': `Bearer ${token_acc}`,
+                    },
+                    
+                    body: formData
+                    
+                    
+                });
+
+                // Parse the response
+                if(response.ok){
+                    const data = await response.json();
+                    
+                    
+
+        
+                    // Set the image URL dynamically
+                    document.getElementById('resultImage').src = data;
+
+
+                }else{
+                    
+                    refreshToken();
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error uploading image.');
+            }
+
+
+    }
+
+    document.getElementById("ai-form").addEventListener('submit', async function (event){
+        event.preventDefault();
+        token_acc = localStorage.getItem("accessToken");
+        pairfect();
+    });
+
+    const refreshToken = async () => {
+            try {
+                console.log("Attempting to refresh token...");
+                let response_refresh = await fetch('https://calliographie-744429109192.asia-southeast2.run.app/api/user/refresh', {
+                    method: 'POST',
+                    credentials: 'include',
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username }),
+                });
+                
+                if (response_refresh.ok) {
+                    const data2 = await response_refresh.json();
+                    localStorage.setItem("accessToken", data2.accessToken);
+                    
+                    alert(`Token refreshed successfully, please try again!!`);
+                } else {
+                    const error = await response_refresh.json();
+                    console.error("Refresh token failed:", error);
+                    alert(`Error refreshing token: ${error.message}`);
+                }
+            } catch (err) {
+                console.error("Error during refresh token fetch:", err);
+            }
+        };
+
+</script>
+</html>

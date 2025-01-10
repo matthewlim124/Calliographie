@@ -20,7 +20,7 @@
         const refreshToken = async () => {
                 try {
                     console.log("Attempting to refresh token...");
-                    let response_refresh = await fetch('http://localhost:8080/api/user/refresh', {
+                    let response_refresh = await fetch('https://calliographie-744429109192.asia-southeast2.run.app/api/user/refresh', {
                         method: 'POST',
                         credentials: 'include',
                         withCredentials: true,

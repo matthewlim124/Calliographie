@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        .flex-container{
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .container{
+            min-height: 70vh;
+            width: 50%;
+           
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .order-list {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .order-item {
+            border: 1px dashed #ccc;
+            padding: 10px;
+            margin: 5px 0;
+        }
+
+        .api-key-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .api-key-container input {
+            margin-left: 10px;
+            padding: 5px;
+            width: 300px;
+            font-size: 1rem;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Profile Page</h1>
+    <div class="flex-container">
+        <div id="container1" class="container">
+            <h2>Pending Orders</h2>
+            <div id="pendingOrders" class="order-list">
+                <!-- Pending orders will be displayed here -->
+            </div>
+
+            <h2>Finished Orders</h2>
+            <div id="finishedOrders" class="order-list">
+                <!-- Finished orders will be displayed here -->
+            </div>
+        </div>
+
+        <div id="container2" class="container">
+            <h2>Developer? Get your API key here</h2>
+            <p>Check the api documentation <a href="https://github.com/matthewlim124/Calliographie">here!</a></p>
+            <!-- Button to generate API key -->
+            <button onclick="generateApiKey()">Generate API Key</button>
+            <!-- Display API key -->
+            <div id="apiKeyContainer" class="api-key-container">
+                <input type="text" id="apiKey" readonly />
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let username = localStorage.getItem("usr");
+        let token_acc = localStorage.getItem("accessToken");
+
+        // Function to generate the API Key
+        async function generateApiKey() {
+            token_acc = localStorage.getItem("accessToken");
+            try {
+                const response = await fetch("https://calliographie-744429109192.asia-southeast2.run.app/api/user/apiKey", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token_acc}`,
+                    },
+                    body: JSON.stringify({ username })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    // Display the generated API key
+                    
+                    
+                    document.getElementById("apiKey").value = data.string_api;
+                } else {
+                    const error = await response.json();
+                    
+                    alert("Error generating API key: " + error.message);
+                    refreshToken()
+                }
+            } catch (err) {
+                console.error("Failed to generate API key:", err);
+                alert("Error generating API key. Please try again.");
+            }
+        }
+
+        async function displayOrder() {
+            try {
+                const response = await fetch("https://calliographie-744429109192.asia-southeast2.run.app/api/service/getOrder", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token_acc}`,
+                    },
+                    body: JSON.stringify({ username }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    const pendingOrdersContainer = document.getElementById('pendingOrders');
+                    const finishedOrdersContainer = document.getElementById('finishedOrders');
+
+                    // Clear the containers before populating
+                    pendingOrdersContainer.innerHTML = '';
+                    finishedOrdersContainer.innerHTML = '';
+
+                    // Loop through the orders and categorize them
+                    data.forEach(order => {
+                        const orderElement = document.createElement('div');
+                        orderElement.classList.add('order-item');
+                        orderElement.innerHTML = `
+                            <h3>Order ID: ${order.order_id}</h3>
+                            <p>Order Products: ${JSON.stringify(order.order_product)}</p>
+                        `;
+                        
+                        if (order.status === false) {
+                            const paymentButton = document.createElement('button');
+                            paymentButton.textContent = 'Pay Now';
+                            paymentButton.onclick = () => {
+                                // Redirect to Stripe payment URL when the button is clicked
+                                window.location.href = order.stripe_payment_url;
+                            };
+                            orderElement.appendChild(paymentButton);
+                            pendingOrdersContainer.appendChild(orderElement); // Add to pending orders
+                        } else {
+                            finishedOrdersContainer.appendChild(orderElement); // Add to finished orders
+                        }
+                    });
+                } else {
+                    const error = await response.json();
+                    console.log("Error getting orders:", error);
+                    refreshToken();
+                }
+            } catch (err) {
+                console.error("Failed to get orders:", err);
+                alert("Failed to fetch orders. Please try again.");
+            }
+        }
+
+        const refreshToken = async () => {
+            try {
+                console.log("Attempting to refresh token...");
+                let response_refresh = await fetch('https://calliographie-744429109192.asia-southeast2.run.app/api/user/refresh', {
+                    method: 'POST',
+                    credentials: 'include',
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username }),
+                });
+                
+                if (response_refresh.ok) {
+                    const data2 = await response_refresh.json();
+                    localStorage.setItem("accessToken", data2.accessToken);
+                    
+                    alert(`Token refreshed successfully, please try again!!`);
+                } else {
+                    const error = await response_refresh.json();
+                    console.error("Refresh token failed:", error);
+                    alert(`Error refreshing token: ${error.message}`);
+                }
+            } catch (err) {
+                console.error("Error during refresh token fetch:", err);
+            }
+        };
+
+        // Call the displayOrder function to load orders when the page is ready
+        displayOrder();
+    </script>
+</body>
+</html>

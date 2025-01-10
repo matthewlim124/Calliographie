@@ -6,7 +6,7 @@ const validateToken = require("../middleware/TokenHandler.js");
 const cookieparser = require("cookie-parser");
 const { constants } = require("../constants.js");
 const supabase = require("../config/DB_config.js");
-
+const crypto = require("crypto"); // Node's built-in crypto module
 //register user
 //@route for POST/api/user/register
 //@access public
@@ -78,7 +78,7 @@ const loginUser = asyncHandler( async (req,res) =>{
                 id: user.id,
 
             },
-        }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "5s"});
+        }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "3m"});
 
         const refreshToken = jwt.sign({
             user: { //payload
@@ -116,13 +116,71 @@ const loginUser = asyncHandler( async (req,res) =>{
 //@access private
 
 const currentUser = asyncHandler( async (req,res) =>{
-    res.json(req.user);
+    
+    const {username} = req.body;
+    const {data, error} = await supabase.from("user").select('*').eq("username", username);
+    const user_score = data[0].user_score;
+    const user_reward = data[0].user_reward;
+
+    res.json({user_score, user_reward});
 
 });
+
+//update user in db
+//@route for POST/api/user/update
+//@access private
+
+const updateUser = asyncHandler( async (req,res) =>{
+
+    const {username, user_score} = req.body;
+    const score_int = parseInt(user_score, 10);
+
+    const {data, error} = await supabase.from("user").select('*').eq("username", username);
+    const user = data[0];
+
+    let newScore = user.user_score + score_int;
+    const update_score = await supabase.from("user").update({user_score: newScore}).eq("username", username);
+    
+    res.statusCode = 200;
+        
+    res.json({mesage: "Score update success"});
+});
+
+
+//generate apikey
+//@route for POST/api/user/apiKey
+//@access private
+
+const apiKey = asyncHandler(async (req,res)=>{
+    const { username } = req.body; // Getting username from the request body
+    
+    if (!username) {
+        return res.status(400).json({ message: "Username is required" });
+    }
+
+    // Step 1: Generate a secure random API key (you can adjust the length as necessary)
+    const apiKey = crypto.randomBytes(32).toString("hex"); // Generates a 64-character hex string
+    const string_api = apiKey.toString();
+
+    console.log(apiKey, string_api);
+    // Step 2: Store the API key in the database (you'll need a table for API keys associated with users)
+    const { data, error } = await supabase.from("user").update({ api_key: string_api }).eq("username", username); // You can adjust this based on how you uniquely identify users
+    console.log("database completed");
+    if (error) {
+        return res.status(500).json({ message: `Error storing API key: ${error.message}` });
+    }
+
+    // Step 3: Return the API key in the response (to the user)
+    res.statusCode = 200;
+
+    res.json({ message: "API key generated successfully", string_api: string_api});
+});
+
 
 //refresh user token
 //@route for POST/api/user/refresh
 //@access public
+
 
 const refreshUser = asyncHandler( async (req, res) => {
 
@@ -146,7 +204,7 @@ const refreshUser = asyncHandler( async (req, res) => {
                     id: user.id,
     
                 },
-            }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "10s"});
+            }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "15m"});
             console.log("finished");
             res.statusCode = 200;
             
@@ -169,4 +227,4 @@ const refreshUser = asyncHandler( async (req, res) => {
 });
 
 
-module.exports = {registerUser, loginUser, currentUser, refreshUser};
+module.exports = {registerUser, loginUser, currentUser, refreshUser, updateUser, apiKey};
