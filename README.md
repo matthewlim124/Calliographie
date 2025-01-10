@@ -219,14 +219,14 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
 6.  **Hosting url**/api/user/current<br>
     Endpoint untuk mendapatkan reward apa saja dan skor user sekarang.<br>
 
-        Header yang diterima:<br>
+    Header yang diterima:<br>
 
         ```
         "Content-Type: application/json",
         "Authorization: Bearer <your-access-token> atau ApiKey <api-key>"
         ```
 
-        Request body (JSON):
+    Request body (JSON):
 
         ```
         {
@@ -235,7 +235,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
         }
         ```
 
-        Response (JSON):
+    Response (JSON):
 
         ```
 
@@ -246,7 +246,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
         }
         ```
 
-        Curl Format
+    Curl Format
 
         ```
         curl -X POST https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/user/current \
@@ -260,14 +260,14 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
 7.  **Hosting url**/api/service/getroduct<br>
     Endpoint untuk mendapatkan product apa saja.<br>
 
-            Header yang diterima:<br>
+    Header yang diterima:<br>
 
             ```
             "Content-Type: application/json"
 
             ```
 
-            Request body (JSON):
+    Request body (JSON):
 
             ```
             {
@@ -276,7 +276,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
             }
             ```
 
-            Response (JSON):
+    Response (JSON):
 
             ```
 
@@ -308,7 +308,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
             }
             ```
 
-            Curl Format
+    Curl Format
 
             ```
             curl -X GET https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/service/getProduct \
@@ -318,14 +318,14 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
 8.  **Hosting url**/api/user/checkout<br>
     Endpoint untuk membuat dan mengupdate data order pada database dan redirect user untuk membayar ke stripe checkout.<br>
 
-        Header yang diterima:<br>
+    Header yang diterima:<br>
 
         ```
         "Content-Type: application/json,"
         "Authorization: Bearer <your-access-token> atau ApiKey <api-key>"
         ```
 
-        Request body (JSON):
+    Request body (JSON):
 
         ```
         {
@@ -336,7 +336,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
         }
         ```
 
-        Response (JSON):
+    Response (JSON):
 
         ```
 
@@ -346,7 +346,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
         }
         ```
 
-        Curl Format
+    Curl Format
 
         ```
         curl -X POST "https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/service/checkout" \
@@ -358,14 +358,14 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
 9.  **Hosting url**/api/user/personal<br>
     Endpoint untuk bertanya kepada ai mengenai kaligrafi dan meminta cek hasil pekerjaan kaligrafi.<br>
 
-        Header yang diterima:<br>
+    Header yang diterima:<br>
 
         ```
         "Content-Type: application/json",
         "Authorization: Bearer <your-access-token> atau ApiKey <api-key>"
         ```
 
-        Request body (JSON):
+    Request body (JSON):
 
         ```
         {
@@ -376,7 +376,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
         }
         ```
 
-        Response (JSON):
+    Response (JSON):
 
         ```
 
@@ -386,7 +386,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
         }
         ```
 
-        Curl Format
+    Curl Format
 
         ```
         curl -X POST "https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/service/personal" \
@@ -399,14 +399,14 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
     Endpoint untuk matching image kepada servis pairfect untuk mendapatkan gambar baru.<br>
     Dengan tujuan untuk mencari inspirasi <br>
 
-            Header yang diterima:<br>
+    Header yang diterima:<br>
 
             ```
             "Content-Type: application/json",
             "Authorization: Bearer <your-access-token> atau ApiKey <api-key>"
             ```
 
-            Request body (JSON):
+    Request body (JSON):
 
             ```
             {
@@ -417,7 +417,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
             }
             ```
 
-            Response (JSON):
+    Response (JSON):
 
             ```
 
@@ -427,7 +427,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
             }
             ```
 
-            Curl Format
+    Curl Format
 
             ```
             curl -X POST "https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/service/pairfect" \
@@ -439,14 +439,14 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
 11. **Hosting url**/api/user/exchange<br>
     Endpoint untuk menukar reward pada suatu user berdasarkan skor atau poin yang dimiliki.<br>
 
-            Header yang diterima:<br>
+    Header yang diterima:<br>
 
             ```
             "Content-Type: application/json",
             "Authorization: Bearer <your-access-token> atau ApiKey <api-key>"
             ```
 
-            Request body (JSON):
+    Request body (JSON):
 
             ```
             {
@@ -457,7 +457,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
             }
             ```
 
-            Response (JSON):
+    Response (JSON):
 
             ```
 
@@ -467,7 +467,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
             }
             ```
 
-            Curl Format
+    Curl Format
 
             ```
             curl -X POST "https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/service/exchange" \
@@ -479,14 +479,14 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
 12. **Hosting url**/api/user/getOrder<br>
     Endpoint untuk mendapatkan order apa saja pada suatu user.<br>
 
-            Header yang diterima:<br>
+    Header yang diterima:<br>
 
             ```
             "Content-Type: application/json",
             "Authorization: Bearer <your-access-token> atau ApiKey <api-key>"
             ```
 
-            Request body (JSON):
+    Request body (JSON):
 
             ```
             {
@@ -496,7 +496,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
             }
             ```
 
-            Response (JSON):
+    Response (JSON):
 
             ```
 
@@ -510,7 +510,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
             }
             ```
 
-            Curl Format
+    Curl Format
 
             ```
             curl -X POST "https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/service/getOrder" \
