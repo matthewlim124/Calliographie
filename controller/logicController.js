@@ -92,7 +92,7 @@ const pairfect = async(req,res) =>{
 
     console.log("Entering pairfect");
 
-    const response = await axios.post('https://pairfect.codebloop.my.id/api/v1/images/pair', formData, {
+    const response = await axios.post('https://pairfect.codebloop.my.id/api/v1/images/pairs', formData, {
         headers: {
         'accept': 'application/json',
         'X-API-Key': api_key,
@@ -101,10 +101,10 @@ const pairfect = async(req,res) =>{
         }
     });
 
-    console.log("Finish pairfect");
+    
 
     // Access response data directly
-    console.log(response.data.result_image_uri);
+    
 
     // Respond with the data received from the API
     res.json(response.data.result_image_uri);
@@ -258,8 +258,8 @@ const checkOut = async (req, res) => {
         const session_stripe = await stripe.checkout.sessions.create({
             line_items: lineItemArr,
             mode: 'payment',
-            success_url: 'https://calliographie-744429109192.asia-southeast2.run.app/success.html',
-            cancel_url: 'https://calliographie-744429109192.asia-southeast2.run.app/home.html',
+            success_url: 'https://calliographie-integrated-744429109192.asia-southeast2.run.app/success.html',
+            cancel_url: 'https://calliographie-integrated-744429109192.asia-southeast2.run.app/home.html',
             metadata: {
                 user_id: userData[0].user_id,
                 reward_name: rewardData[0].reward_name,
@@ -280,8 +280,8 @@ const checkOut = async (req, res) => {
         const session_stripe = await stripe.checkout.sessions.create({
             line_items: lineItemArr,
             mode: 'payment',
-            success_url: 'https://calliographie-744429109192.asia-southeast2.run.app/success.html',
-            cancel_url: 'https://calliographie-744429109192.asia-southeast2.run.app/home.html',
+            success_url: 'https://calliographie-integrated-744429109192.asia-southeast2.run.app/success.html',
+            cancel_url: 'https://calliographie-integrated-744429109192.asia-southeast2.run.app/home.html',
             metadata: {
                 user_id: userData[0].user_id,
                 reward_name: '0'

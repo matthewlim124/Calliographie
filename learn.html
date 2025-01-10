@@ -132,7 +132,7 @@
         const refreshToken = async () => {
                 try {
                     console.log("Attempting to refresh token...");
-                    let response_refresh = await fetch('https://calliographie-744429109192.asia-southeast2.run.app/api/user/refresh', {
+                    let response_refresh = await fetch('https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/user/refresh', {
                         method: 'POST',
                         credentials: 'include',
                         withCredentials: true,
@@ -168,7 +168,7 @@
 
         async function getScore(){
             try{
-                const response = await fetch("https://calliographie-744429109192.asia-southeast2.run.app/api/user/current", {
+                const response = await fetch("https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/user/current", {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -211,7 +211,7 @@
             try {
                 
 
-                const response = await fetch("https://calliographie-744429109192.asia-southeast2.run.app/api/service/personal", {
+                const response = await fetch("https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/service/personal", {
                     method: 'POST',
                     headers: {
                         
@@ -231,7 +231,7 @@
                     
                     
 
-                    const response2 = await fetch("https://calliographie-744429109192.asia-southeast2.run.app/api/user/update", {
+                    const response2 = await fetch("https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/user/update", {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

@@ -69,7 +69,8 @@
     </style>
 </head>
 <body>
-    <h1>Order</h1>
+    <h1>Order, drag products from middle box to Your Box and click order</h1>
+    <p>Note only 1 product type per box, use laptop or computer, html is not responsive and uninteractable for mobile yet</p>
 
     <div class="container">
         <div id="left">
@@ -94,7 +95,7 @@
         const rightrightBox = document.getElementById("rightright");
         async function fetchAndDisplayProducts() {
             try {
-                const response = await fetch("https://calliographie-744429109192.asia-southeast2.run.app/api/service/getProduct", {
+                const response = await fetch("https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/service/getProduct", {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                 });
@@ -113,7 +114,7 @@
 
         async function fetchAndDisplayRewards(){
             try {
-                const response = await fetch("https://calliographie-744429109192.asia-southeast2.run.app/api/user/current", {
+                const response = await fetch("https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/user/current", {
                     method: 'POST',
                     headers: { 
                         'Content-Type': 'application/json',
@@ -260,7 +261,7 @@
         const refreshToken = async () => {
                 try {
                     console.log("Attempting to refresh token...");
-                    let response_refresh = await fetch('https://calliographie-744429109192.asia-southeast2.run.app/api/user/refresh', {
+                    let response_refresh = await fetch('https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/user/refresh', {
                         method: 'POST',
                         credentials: 'include',
                         withCredentials: true,
@@ -306,7 +307,7 @@
             
             try {
                 
-                const response = await fetch("https://calliographie-744429109192.asia-southeast2.run.app/api/service/checkout", {
+                const response = await fetch("https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/service/checkout", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

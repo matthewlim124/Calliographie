@@ -82,7 +82,7 @@
         async function generateApiKey() {
             token_acc = localStorage.getItem("accessToken");
             try {
-                const response = await fetch("https://calliographie-744429109192.asia-southeast2.run.app/api/user/apiKey", {
+                const response = await fetch("https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/user/apiKey", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -111,7 +111,7 @@
 
         async function displayOrder() {
             try {
-                const response = await fetch("https://calliographie-744429109192.asia-southeast2.run.app/api/service/getOrder", {
+                const response = await fetch("https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/service/getOrder", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -166,7 +166,7 @@
         const refreshToken = async () => {
             try {
                 console.log("Attempting to refresh token...");
-                let response_refresh = await fetch('https://calliographie-744429109192.asia-southeast2.run.app/api/user/refresh', {
+                let response_refresh = await fetch('https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/user/refresh', {
                     method: 'POST',
                     credentials: 'include',
                     withCredentials: true,

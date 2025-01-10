@@ -17,7 +17,7 @@ const port = process.env.PORT || 8080;
 
 
 app.use(cors({
-    origin: 'https://calliographie-744429109192.asia-southeast2.run.app', // Your frontend origin
+    origin: 'https://calliographie-integrated-744429109192.asia-southeast2.run.app', // Your frontend origin
     credentials: true,              // Allow cookies to be sent
 }));
 
