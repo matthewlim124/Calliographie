@@ -257,7 +257,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
 
 **Endpoint sisi Logic atau Bisnis**
 
-7.  **Hosting url**/api/service/getroduct<br>
+7.  **Hosting url**/api/service/getProduct<br>
     Endpoint untuk mendapatkan product apa saja.<br>
 
     Header yang diterima:<br>
