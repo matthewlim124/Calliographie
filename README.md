@@ -1,16 +1,93 @@
-# Project Integrated System Technology
+# Project Integrated System and Technology 18222005
 
-## How to access or call api
+**Project without integration : https://calliographie-744429109192.asia-southeast2.run.app**
+**Project with integration (pairfect) : https://calliographie-integrated-744429109192.asia-southeast2.run.app**
 
-**Project url: https://calliographie-744429109192.asia-southeast2.run.app**
+## Before you start
 
-1.POST url/api/user/register (example: https://calliographie-744429109192.asia-southeast2.run.app/api/user/register)
+Terdapat 2 projek yaitu original tanpa integrasi dan yang integrasi dengan Lydia Gracia (18222035) dengan nama projek pairfec dimana semua endpoint bisa diakses pada project original dan integrasi kecuali /pairfect dimana merupakan endpoint pada project integrasi saja.
 
-Allows user to register an account using username and password
+**Terdapat API yang public dan private (memerlukan api key atau JWT)**.
+Jika ingin mendapatkan api key mohon untuk membuat akun di website terlebih dahulu dan login untuk mendapatkan jwt baru bisa generate api key.
 
-2.POST url/api/user/login
+Ada 2 cara untuk mendapatkan api key,
+**Melalui frontend**: interaksi melalui html / front end dari profile.html dari home.html kemudian gnerate API Key.
 
-Allows user to login using registered credentials (username & password)
+**Melalui endpoints**: /api/user/register -> /api/user/login -> api/user/apiKey untuk detil masing masing endpoint mohon refer ke bagian selanjutnya.
+
+## Dokumentasi API
+
+**Hosting url**:
+https://calliographie-744429109192.asia-southeast2.run.app
+
+atau
+
+https://calliographie-integrated-744429109192.asia-southeast2.run.app
+
+**Endpoint sisi User**
+
+1.  **Hosting url**/api/user/register
+    Endpoint untuk mendaftarkan akun.
+
+    Header yang diterima:
+    "Content-Type: application/json"
+
+    Request body:
+    "username": string
+    "password": string
+
+    Response:
+
+    ```
+    {
+        "_id": "user_id pada database"
+        "username": "username anda"
+
+    }
+    ```
+
+    Curl Format
+
+    ```
+    curl -X POST https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/user/register \
+    -H "Content-Type: application/json" \
+    -d '{"username":"<your-username>","password":"<your-password>"}'
+    ```
+
+2.  **Hosting url**/api/user/login
+    Endpoint untuk masuk ke akun.
+
+        Header yang diterima:
+        "Content-Type: application/json"
+
+        Request body:
+        "username": string
+        "password": string
+
+        Response:
+        ```
+        {
+            "_id": "user_id pada database"
+            "username": "username anda"
+
+        }
+        ```
+        Curl Format
+        ```
+        curl -X POST https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/user/register \
+        -H "Content-Type: application/json" \
+        -d '{"username":"<your-username>","password":"<your-password>"}'
+        ```
+
+    api/user/login
+    api/user/refresh
+
+Private - perlu autentikasi JWT / API Key
+api/user/apiKey
+api/user/update
+api/user/current
+
+**Endpoint sisi Logic atau Bisnis**
 
 ## Call the api from your browser
 
