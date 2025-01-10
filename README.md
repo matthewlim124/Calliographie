@@ -11,7 +11,7 @@ Terdapat 2 projek yaitu original tanpa integrasi dan yang integrasi dengan Lydia
 Jika ingin mendapatkan api key mohon untuk membuat akun di website terlebih dahulu dan login untuk mendapatkan jwt baru bisa generate api key.
 
 Ada 2 cara untuk mendapatkan api key,<br>
-**Melalui frontend**: interaksi melalui html / front end dari profile.html dari home.html kemudian gnerate API Key.
+**Melalui frontend**: interaksi melalui html / front end dari **Hosting url**/profile.html kemudian generate API Key.
 
 **Melalui endpoints**: /api/user/register -> /api/user/login -> api/user/apiKey untuk detil masing masing endpoint mohon refer ke bagian selanjutnya.
 
