@@ -7,6 +7,8 @@
 
 Terdapat 2 projek yaitu original tanpa integrasi dan yang integrasi dengan Lydia Gracia (18222035) dengan nama projek pairfec dimana semua endpoint bisa diakses pada project original dan integrasi kecuali /pairfect dimana merupakan endpoint pada project integrasi saja.
 
+**Tidak perlu mengkopi JWT Token saat setelah sign-in, sudah diuruskan oleh server**
+
 **Terdapat API yang public dan private (memerlukan api key atau JWT)**.<br>
 Jika ingin mendapatkan api key mohon untuk membuat akun di website terlebih dahulu dan login untuk mendapatkan jwt baru bisa generate api key.
 
