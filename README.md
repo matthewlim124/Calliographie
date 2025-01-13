@@ -54,15 +54,21 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
     }
     ```
 
-    Curl Format
+    Curl Format - Linux
 
     ```
     curl -X POST https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/user/register \
     -H "Content-Type: application/json" \
     -d '{"username":"john-doe","password":"12345"}'
     ```
+    Curl Format - Windows
+    ```
+    curl -X POST https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/user/register ^
+    -H "Content-Type: application/json" ^
+    -d "{\"username\":\"john-doe\",\"password\":\"12345\"}"
+    ```
 
-2.  **Hosting url**/api/user/login<br>
+3.  **Hosting url**/api/user/login<br>
     Endpoint untuk masuk ke akun dan mendapatkan jwt token dan refresh token yang disimpan pada httpOnly cookie.<br>
 
     Header yang diterima:
@@ -102,7 +108,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
     -d '{"username":"john-doe","password":"12345"}'
     ```
 
-3.  **Hosting url**/api/user/refresh<br>
+4.  **Hosting url**/api/user/refresh<br>
     Endpoint untuk merefresh jwt.<br>
 
     Header yang diterima:
@@ -140,7 +146,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
     --cookie "ref_tok=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
     ```
 
-4.  **Hosting url**/api/user/apiKey<br>
+5.  **Hosting url**/api/user/apiKey<br>
     Endpoint untuk mendapatkan api key.<br>
     Api key hanya ditunjukkan sekali, jika keluar page html maka tidak lagi ditunjukkan.<br>
 
@@ -180,7 +186,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
     -d '{"username":"john-doe"}'
     ```
 
-5.  **Hosting url**/api/user/update<br>
+6.  **Hosting url**/api/user/update<br>
     Endpoint untuk mengupdate skor atau point user ke database.<br>
 
     Header yang diterima:<br>
@@ -218,7 +224,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
     -d '{"username":"john-doe", "user_score":"5"}'
     ```
 
-6.  **Hosting url**/api/user/current<br>
+7.  **Hosting url**/api/user/current<br>
     Endpoint untuk mendapatkan reward apa saja dan skor user sekarang.<br>
 
     Header yang diterima:<br>
