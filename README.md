@@ -137,7 +137,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
     }
     ```
 
-    Curl Format
+    Curl Format - Linux
 
     ```
     curl -X POST https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/user/refresh \
@@ -145,8 +145,18 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
     -d '{"username":"john-doe"}' \
     --cookie "ref_tok=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
     ```
+    Curl Format - Windows
 
-5.  **Hosting url**/api/user/apiKey<br>
+    ```
+    curl -X POST https://calliographie-integrated-744429109192.asia-southeast2.run.app/api/user/refresh ^
+    -H "Content-Type: application/json" ^
+    -d "{\"username\":\"john-doe\"}" ^
+    --cookie "ref_tok=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+    
+    ```
+    
+
+6.  **Hosting url**/api/user/apiKey<br>
     Endpoint untuk mendapatkan api key.<br>
     Api key hanya ditunjukkan sekali, jika keluar page html maka tidak lagi ditunjukkan.<br>
 
@@ -186,7 +196,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
     -d '{"username":"john-doe"}'
     ```
 
-6.  **Hosting url**/api/user/update<br>
+7.  **Hosting url**/api/user/update<br>
     Endpoint untuk mengupdate skor atau point user ke database.<br>
 
     Header yang diterima:<br>
@@ -224,7 +234,7 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
     -d '{"username":"john-doe", "user_score":"5"}'
     ```
 
-7.  **Hosting url**/api/user/current<br>
+8.  **Hosting url**/api/user/current<br>
     Endpoint untuk mendapatkan reward apa saja dan skor user sekarang.<br>
 
     Header yang diterima:<br>
