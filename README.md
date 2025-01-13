@@ -125,8 +125,8 @@ https://calliographie-integrated-744429109192.asia-southeast2.run.app
     ```
 
     {
-        "accessToken": "access token jwt baru, expire dalam 15 menit",
-        "username": "username anda"
+        "accessToken": "access token jwt baru, expire dalam 15 menit"
+        
 
     }
     ```
